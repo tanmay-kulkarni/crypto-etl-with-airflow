@@ -22,7 +22,7 @@ def transform_data(**context):
 def load_data(**context):
     data = context['ti'].xcom_pull(task_ids='transform_task')
     df = pd.DataFrame(data)
-    engine = create_engine('postgresql+psycopg2://airflow:airflow@postgres:5432/airflow')
+    engine = create_engine('postgresql+psycopg2://airflow:airflow@postgres:5432/crypto_data')
     df.to_sql('crypto_prices', engine, if_exists='replace', index=False)
 
 with DAG(
@@ -34,7 +34,7 @@ with DAG(
 
     create_table = PostgresOperator(
         task_id='create_table_task',
-        postgres_conn_id='postgres_default',
+        postgres_conn_id='crypto_db',
         sql="""
             DROP TABLE IF EXISTS crypto_prices;
             CREATE TABLE IF NOT EXISTS crypto_prices (

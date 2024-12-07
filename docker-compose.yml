@@ -5,6 +5,9 @@ services:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
       - POSTGRES_DB=airflow
+      - POSTGRES_MULTIPLE_DATABASES=crypto_data  # Add this line
+    volumes:
+      - ./init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh  # Add this line
     ports:
       - "2345:5432"
     healthcheck:
